@@ -1,0 +1,26 @@
+{
+    "name": "wruczek/PhpFileCache",
+    "description": "Light, simple and standalone PHP in-file caching class",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wruczek",
+            "email": "wruczekk@gmail.com",
+            "homepage": "https://wruczek.tech"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "php": ">=5.6.0",
+        "phpunit/phpunit": "5.6.*"
+    },
+    "autoload": {
+        "psr-4": {"Wruczek\\PhpFileCache\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"Wruczek\\PhpFileCache\\": "tests/"}
+    }
+}
