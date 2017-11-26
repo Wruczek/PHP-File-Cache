@@ -1,4 +1,4 @@
-# PHP-File-Cache
+# PHP-File-Cache [![Latest Stable Version](https://poser.pugx.org/wruczek/php-file-cache/version)](https://packagist.org/packages/wruczek/php-file-cache) [![License](https://poser.pugx.org/wruczek/php-file-cache/license)](https://packagist.org/packages/wruczek/php-file-cache)
 Light, simple and standalone PHP in-file caching class
 
 ### Advantages
@@ -12,13 +12,14 @@ Light, simple and standalone PHP in-file caching class
 ### Requirements and Installation
 You need PHP 5.4.0+ for usage and PHP 5.6+ for development (PHPUnit)
 
-Until I publish it on packagist, you can simply copy and paste `src/PhpFileCache.php` file into your project and `require_once` it.
+Require with composer:<br>
+`composer require wruczek/php-file-cache`
 
 ### Usage
 ```php
 <?php
 use Wruczek\PhpFileCache\PhpFileCache;
-require_once __DIR__ . "/vendor/autoload.php"; // path to PhpFileCache.php for now
+require_once __DIR__ . "/vendor/autoload.php";
 
 $cache = new PhpFileCache();
 
