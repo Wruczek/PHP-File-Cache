@@ -28,4 +28,4 @@ $data = $cache->refreshIfExpired("simple-cache-test", function () {
 
 echo "Latest cache save: $data";
 ```
-See [examples](https://github.com/Wruczek/PHP-File-Cache/examples) for more
+See [examples](https://github.com/Wruczek/PHP-File-Cache/tree/master/examples) for more
