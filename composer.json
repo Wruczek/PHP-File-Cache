@@ -1,5 +1,5 @@
 {
-    "name": "wruczek/PhpFileCache",
+    "name": "wruczek/php-file-cache",
     "description": "Light, simple and standalone PHP in-file caching class",
     "minimum-stability": "stable",
     "license": "MIT",
