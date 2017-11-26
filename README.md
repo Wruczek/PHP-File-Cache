@@ -1,4 +1,4 @@
-# PHP-File-Cache [![Latest Stable Version](https://poser.pugx.org/wruczek/php-file-cache/version)](https://packagist.org/packages/wruczek/php-file-cache) [![License](https://poser.pugx.org/wruczek/php-file-cache/license)](https://packagist.org/packages/wruczek/php-file-cache)
+# PHP-File-Cache [![Latest Stable Version](https://poser.pugx.org/wruczek/php-file-cache/version)](https://packagist.org/packages/wruczek/php-file-cache) [![Latest Unstable Version](https://poser.pugx.org/wruczek/php-file-cache/v/unstable)](//packagist.org/packages/wruczek/php-file-cache) [![License](https://poser.pugx.org/wruczek/php-file-cache/license)](https://packagist.org/packages/wruczek/php-file-cache)
 Light, simple and standalone PHP in-file caching class
 
 ### Advantages
