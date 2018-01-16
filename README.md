@@ -1,4 +1,5 @@
 # PHP-File-Cache [![Latest Stable Version](https://poser.pugx.org/wruczek/php-file-cache/version)](https://packagist.org/packages/wruczek/php-file-cache) [![Latest Unstable Version](https://poser.pugx.org/wruczek/php-file-cache/v/unstable)](//packagist.org/packages/wruczek/php-file-cache) [![License](https://poser.pugx.org/wruczek/php-file-cache/license)](https://packagist.org/packages/wruczek/php-file-cache)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FWruczek%2FPHP-File-Cache.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FWruczek%2FPHP-File-Cache?ref=badge_shield)
 Light, simple and standalone PHP in-file caching class
 
 ### Advantages
@@ -30,3 +31,7 @@ $data = $cache->refreshIfExpired("simple-cache-test", function () {
 echo "Latest cache save: $data";
 ```
 See [examples](https://github.com/Wruczek/PHP-File-Cache/tree/master/examples) for more
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FWruczek%2FPHP-File-Cache.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FWruczek%2FPHP-File-Cache?ref=badge_large)
