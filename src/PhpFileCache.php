@@ -2,8 +2,6 @@
 
 namespace Wruczek\PhpFileCache;
 
-use Exception;
-
 /**
  * PhpFileCache - Light, simple and standalone PHP in-file caching class
  * This class was heavily inspired by Simple-PHP-Cache. Huge thanks to Christian Metz
@@ -53,6 +51,7 @@ class PhpFileCache {
      * @param string $cacheDirPath cache directory. Must end with "/"
      * @param string $cacheFileName cache file name
      * @param string $cacheFileExtension cache file extension. Must end with .php
+     * @throws \Exception if there is a problem with loading the cache
      */
     public function __construct($cacheDirPath = "cache/", $cacheFileName = "defaultcache", $cacheFileExtension = ".cache.php") {
         $this->setCacheFilename($cacheFileName);
@@ -65,25 +64,28 @@ class PhpFileCache {
     /**
      * Loads cache
      * @return array array filled with data
-     * @throws Exception
+     * @throws \Exception if there is a problem with loading the cache
      */
     private function loadCacheFile() {
         $filepath = $this->getCacheFilePath();
         $file = @file_get_contents($filepath);
 
-        if (!$file)
-            throw new Exception("Cannot load cache file!");
+        if (!$file) {
+            throw new \Exception("Cannot load cache file! ({$this->getCacheFilename()})");
+        }
 
         // Remove the first line which prevents direct access to the file
         $file = $this->stripFirstLine($file);
         $data = unserialize($file);
 
-        if (!$data)
-            throw new Exception("Cannot unserialize cache file!");
+        if ($data === false) {
+            unlink($filepath);
+            throw new \Exception("Cannot unserialize cache file, cache file deleted. ({$this->getCacheFilename()})");
+        }
 
         if (!isset($data["hash-sum"])) {
             unlink($filepath);
-            throw new Exception("No hash found in cache file, cache file deleted");
+            throw new \Exception("No hash found in cache file, cache file deleted");
         }
 
         $hash = $data["hash-sum"];
@@ -91,7 +93,7 @@ class PhpFileCache {
 
         if ($hash !== $this->getStringHash(serialize($data))) {
             unlink($filepath);
-            throw new Exception("Cache data miss-hashed, cache file deleted");
+            throw new \Exception("Cache data miss-hashed, cache file deleted");
         }
 
         return $data;
@@ -100,7 +102,7 @@ class PhpFileCache {
     /**
      * Saves current cacheArray into the cache file
      * @return $this
-     * @throws \Exception
+     * @throws \Exception if the file cannot be saved
      */
     private function saveCacheFile() {
         if (!file_exists($this->getCacheDir()))
@@ -113,7 +115,7 @@ class PhpFileCache {
         $success = file_put_contents($this->getCacheFilePath(), $firstLine . $data) !== false;
 
         if (!$success)
-            throw new Exception("Cannot save cache");
+            throw new \Exception("Cannot save cache");
 
         return $this;
     }
@@ -126,6 +128,7 @@ class PhpFileCache {
      * @param $expiration int number of seconds before the $key expires
      * @param $permanent bool if true, this item will not be automatically cleared after expiring
      * @return $this
+     * @throws \Exception if the file cannot be saved
      */
     public function store($key, $data, $expiration = 60, $permanent = false) {
         if ($this->isDevMode())
@@ -148,6 +151,7 @@ class PhpFileCache {
      * @param $key string
      * @param bool $meta if true, array will be returned containing metadata alongside data itself
      * @return mixed|null returns data if $key is valid and not expired, NULL otherwise
+     * @throws \Exception if the file cannot be saved
      */
     public function retrieve($key, $meta = false) {
         $this->eraseExpired();
@@ -184,6 +188,7 @@ class PhpFileCache {
      * @param int $cacheTime Cache time. Defaults to 60
      * @param bool $meta If true, returns data with meta. @see retrieve
      * @return mixed|null Data currently stored under key
+     * @throws \Exception if the file cannot be saved
      */
     public function refreshIfExpired($key, $refreshCallback, $cacheTime = 60, $meta = false) {
         if ($this->isExpired($key)) {
@@ -197,6 +202,7 @@ class PhpFileCache {
      * Erases data associated with $key
      * @param $key string
      * @return bool true if $key was found and removed, false otherwise
+     * @throws \Exception if the file cannot be saved
      */
     public function eraseKey($key) {
         if (!$this->isCached($key, false)) {
@@ -211,6 +217,7 @@ class PhpFileCache {
     /**
      * Erases expired keys from cache
      * @return int number of erased entries
+     * @throws \Exception if the file cannot be saved
      */
     public function eraseExpired() {
         $counter = 0;
@@ -230,6 +237,7 @@ class PhpFileCache {
 
     /**
      * Clears the cache
+     * @throws \Exception if the file cannot be saved
      */
     public function clearCache() {
         $this->cacheArray = [];
@@ -242,6 +250,7 @@ class PhpFileCache {
      * @param bool $eraseExpired if true, expired data will
      * be cleared before running this function
      * @return bool
+     * @throws \Exception if the file cannot be saved
      */
     public function isExpired($key, $eraseExpired = true) {
         if ($eraseExpired)
@@ -261,6 +270,7 @@ class PhpFileCache {
      * @param bool $eraseExpired if true, expired data will
      * be cleared before running this function
      * @return bool
+     * @throws \Exception if the file cannot be saved
      */
     public function isCached($key, $eraseExpired = true) {
         if ($eraseExpired)
@@ -291,6 +301,7 @@ class PhpFileCache {
     /**
      * Reloads cache from disc. Can be used after changing file name, extension or cache dir
      * using functions instead of constructor. (This class loads data once, when is created)
+     * @throws \Exception if there is a problem with loading the cache
      */
     public function reloadFromDisc() {
         // Try to load the cache, otherwise create a empty array
