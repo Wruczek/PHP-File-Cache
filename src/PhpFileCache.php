@@ -51,12 +51,13 @@ class PhpFileCache {
      * @param string $cacheDirPath cache directory. Must end with "/"
      * @param string $cacheFileName cache file name
      * @param string $cacheFileExtension cache file extension. Must end with .php
-     * @throws \Exception if there is a problem with loading the cache
+     * @throws \Exception if there is a problem loading the cache
      */
     public function __construct($cacheDirPath = "cache/", $cacheFileName = "defaultcache", $cacheFileExtension = ".cache.php") {
         $this->setCacheFilename($cacheFileName);
         $this->setCacheDir($cacheDirPath);
         $this->setCacheFileExtension($cacheFileExtension);
+        $this->setDevMode(false);
 
         $this->reloadFromDisc();
     }
@@ -64,7 +65,7 @@ class PhpFileCache {
     /**
      * Loads cache
      * @return array array filled with data
-     * @throws \Exception if there is a problem with loading the cache
+     * @throws \Exception if there is a problem loading the cache
      */
     private function loadCacheFile() {
         $filepath = $this->getCacheFilePath();
@@ -131,6 +132,10 @@ class PhpFileCache {
      * @throws \Exception if the file cannot be saved
      */
     public function store($key, $data, $expiration = 60, $permanent = false) {
+        if(!is_string($key)) {
+            throw new \InvalidArgumentException('$key must be a string, got type "' . get_class($key) . '" instead');
+        }
+
         if ($this->isDevMode())
             $expiration = 1;
 
@@ -301,7 +306,7 @@ class PhpFileCache {
     /**
      * Reloads cache from disc. Can be used after changing file name, extension or cache dir
      * using functions instead of constructor. (This class loads data once, when is created)
-     * @throws \Exception if there is a problem with loading the cache
+     * @throws \Exception if there is a problem loading the cache
      */
     public function reloadFromDisc() {
         // Try to load the cache, otherwise create a empty array
@@ -312,8 +317,13 @@ class PhpFileCache {
      * Returns md5 hash of the given string.
      * @param $str string String to be hashed
      * @return string MD5 hash
+     * @throws \InvalidArgumentException if $str is not a string
      */
     private function getStringHash($str) {
+        if(!is_string($str)) {
+            throw new \InvalidArgumentException('$key must be a string, got type "' . get_class($str) . '" instead');
+        }
+
         return md5($str);
     }
 
@@ -379,8 +389,13 @@ class PhpFileCache {
      * Sets new cache file name. If you want to read data from new file, consider calling reloadFromDisc.
      * @param string $cacheFilename
      * @return $this
+     * @throws \InvalidArgumentException if $cacheFilename is not a string
      */
     public function setCacheFilename($cacheFilename) {
+        if(!is_string($cacheFilename)) {
+            throw new \InvalidArgumentException('$key must be a string, got type "' . get_class($cacheFilename) . '" instead');
+        }
+
         $this->cacheFilename = $cacheFilename;
         $this->cacheFilenameHashed = $this->getStringHash($cacheFilename);
         return $this;

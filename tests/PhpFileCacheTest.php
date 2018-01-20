@@ -53,6 +53,14 @@ class PhpFileCacheTest extends \PHPUnit_Framework_TestCase {
         self::assertFalse($cache->isExpired("test"));
     }
 
+    public function testKeyCharacters() {
+        $cache = new PhpFileCache(self::__TESTDIR);
+
+        foreach (["'", "\"", "test & test", "óÓłć€$123"] as $key) {
+            self::assertSame($this->testarray, $cache->store($key, $this->testarray)->retrieve($key));
+        }
+    }
+
     public function testRetrieve() {
         $cache = new PhpFileCache(self::__TESTDIR);
 
