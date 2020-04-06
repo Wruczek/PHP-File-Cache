@@ -82,7 +82,7 @@ class PhpFileCacheTest extends \PHPUnit_Framework_TestCase {
     }
 
 
-    public function testEaraseExpired() {
+    public function testEraseExpired() {
         $cache = new PhpFileCache(self::__TESTDIR);
 
         $cache->store("test", "test123", 1);

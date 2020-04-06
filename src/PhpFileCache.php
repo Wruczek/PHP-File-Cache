@@ -72,6 +72,7 @@ class PhpFileCache {
         $file = @file_get_contents($filepath);
 
         if (!$file) {
+            unlink($filepath);
             throw new \Exception("Cannot load cache file! ({$this->getCacheFilename()})");
         }
 
