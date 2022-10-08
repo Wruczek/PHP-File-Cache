@@ -6,6 +6,7 @@ Light, simple and standalone PHP in-file caching class
 - All code in one file - no pointless drivers.
 - Secure - every generated cache file have a php header with `die`, making direct access impossible even if someone knows the path and your server is not configured properly
 - Well documented and tested
+- Handles concurrency correctly via flock
 - Supports PHP 5.4.0 - 7.1+
 - Free under a MIT license
 

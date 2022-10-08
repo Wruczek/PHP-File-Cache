@@ -69,11 +69,22 @@ class PhpFileCache {
      */
     private function loadCacheFile() {
         $filepath = $this->getCacheFilePath();
-        $file = @file_get_contents($filepath);
+
+        if(($fp = fopen($filepath, "r+")) === false)
+            throw new \Exception("Could not fopen $filepath");
+
+        if (flock($fp, LOCK_SH)) {
+            $file = fread($fp, filesize($filepath));
+            flock($fp, LOCK_UN);
+        } else {
+            throw new \Exception("Could not get the lock for $filepath");
+        }
+        fclose($fp);
+
 
         if (!$file) {
             unlink($filepath);
-            throw new \Exception("Cannot load cache file! ({$this->getCacheFilename()})");
+            throw new \Exception("Cannot read cache file! ({$this->getCacheFilename()})");
         }
 
         // Remove the first line which prevents direct access to the file
@@ -114,9 +125,7 @@ class PhpFileCache {
         $cache["hash-sum"] = $this->getStringHash(serialize($cache));
         $data = serialize($cache);
         $firstLine = '<?php die("Access denied") ?>' . PHP_EOL;
-        $success = file_put_contents($this->getCacheFilePath(), $firstLine . $data) !== false;
-
-        if (!$success)
+        if(file_put_contents($this->getCacheFilePath(), $firstLine . $data, LOCK_EX) === false)
             throw new \Exception("Cannot save cache");
 
         return $this;
