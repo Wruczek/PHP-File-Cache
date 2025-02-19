@@ -1,6 +1,9 @@
 # Deprecation notice
 This project is not in active development. Issues remain with cache files sometimes being saved with invalid data and unable to be read (see: [issue #3](https://github.com/Wruczek/PHP-File-Cache/issues/3) and [#4](https://github.com/Wruczek/PHP-File-Cache/issues/4)). The API is confusing and a rewrite would be necessary (for example renaming "retrive" function to "get", "store" to "set" etc.).
 
+A community fork has been created, with authors planning on continuing the devlopment. 
+### Check out a maintaned community fork: https://github.com/flightphp/PHP-File-Cache
+
 # PHP-File-Cache [![Latest Stable Version](https://poser.pugx.org/wruczek/php-file-cache/version)](https://packagist.org/packages/wruczek/php-file-cache) [![Latest Unstable Version](https://poser.pugx.org/wruczek/php-file-cache/v/unstable)](//packagist.org/packages/wruczek/php-file-cache) [![License](https://poser.pugx.org/wruczek/php-file-cache/license)](https://packagist.org/packages/wruczek/php-file-cache)
 Light, simple and standalone PHP in-file caching class
 
